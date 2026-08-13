@@ -3,266 +3,156 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ฝึกศัพท์ภาษาอังกฤษ Flashcards (Week 1-13)</title>
+    <title>Vocab Practice & Exam Center</title>
     <style>
         * { box-sizing: border-box; font-family: 'Kanit', sans-serif, Arial; }
         body { background: #f0f4f8; margin: 0; padding: 15px; text-align: center; color: #333; }
-        h1 { color: #2c3e50; font-size: 22px; margin-bottom: 5px; }
-        .filter-container { margin-bottom: 12px; }
-        select { padding: 8px 12px; font-size: 16px; border-radius: 8px; border: 2px solid #3498db; font-weight: bold; color: #2c3e50; }
-        .mode-btn { background: #3498db; color: white; border: none; padding: 10px 15px; margin: 3px; border-radius: 8px; font-weight: bold; cursor: pointer; }
-        .mode-btn.active { background: #2c3e50; }
-        .card { background: white; border-radius: 15px; padding: 20px; margin: 15px auto; max-width: 400px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        .flash-img { width: 100%; height: 200px; object-fit: cover; border-radius: 10px; margin-bottom: 10px; background: #eef2f3; }
-        .word { font-size: 32px; font-weight: bold; color: #2e86de; margin: 5px 0; }
-        .pos { color: #888; font-style: italic; font-size: 14px; }
-        .meaning { font-size: 22px; color: #2d3436; margin: 10px 0; font-weight: bold; }
-        .btn-sound { background: #10ac84; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-size: 16px; cursor: pointer; margin-top: 5px; }
-        .options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
-        .opt-btn { background: #f1f2f6; border: 2px solid #ced6e0; padding: 12px; border-radius: 8px; font-size: 16px; cursor: pointer; }
-        .opt-btn:active { background: #dfe4ea; }
-        input[type="text"] { width: 80%; padding: 10px; font-size: 18px; border: 2px solid #ccc; border-radius: 8px; text-align: center; margin-bottom: 10px; }
-        .check-btn { background: #ff9f43; color: white; border: none; padding: 10px 20px; font-size: 16px; border-radius: 8px; cursor: pointer; }
-        .result { font-weight: bold; font-size: 18px; margin-top: 10px; height: 25px; }
-        .nav-btn { background: #718093; color: white; border: none; padding: 8px 15px; border-radius: 5px; margin: 10px 5px; cursor: pointer; }
+        .container { max-width: 480px; margin: 0 auto; }
+        
+        /* Utility Classes */
+        .hidden { display: none !important; }
+        .card { background: white; border-radius: 15px; padding: 20px; margin: 15px auto; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .btn { border: none; padding: 10px 15px; border-radius: 8px; font-weight: bold; cursor: pointer; }
+        .btn-primary { background: #3498db; color: white; }
+        .btn-success { background: #2ecc71; color: white; }
+        .btn-secondary { background: #718093; color: white; }
+        
+        /* Hub Styles */
+        .mode-card { background: white; border-radius: 12px; padding: 18px; margin-bottom: 15px; text-align: left; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.08); border: 2px solid transparent; }
+        .mode-card:hover { border-color: #3498db; }
+        .mode-card h3 { margin: 0 0 5px 0; color: #2c3e50; }
+        .mode-card p { margin: 0; font-size: 13px; color: #666; }
+
+        /* Practice Mode Styles */
+        .flash-img { width: 100%; height: 180px; object-fit: cover; border-radius: 10px; margin-bottom: 10px; background: #eef2f3; }
+        .word { font-size: 30px; font-weight: bold; color: #2e86de; }
+        .meaning { font-size: 20px; color: #2d3436; font-weight: bold; }
+        .options { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+        .opt-btn { background: #f1f2f6; border: 2px solid #ced6e0; padding: 10px; border-radius: 8px; font-size: 15px; cursor: pointer; }
+        .hint-box { background: #eef5fc; border: 2px dashed #3498db; border-radius: 8px; padding: 6px; margin: 8px auto; font-weight: bold; letter-spacing: 2px; }
+        input[type="text"] { width: 80%; padding: 8px; font-size: 16px; border: 2px solid #ccc; border-radius: 8px; text-align: center; margin-bottom: 8px; }
+
+        /* Exam Mode Styles */
+        .timer-bar { background: #e74c3c; height: 6px; border-radius: 3px; width: 100%; transition: width 1s linear; margin-bottom: 10px; }
+        .stats-header { display: flex; justify-content: space-between; font-weight: bold; background: #f8f9fa; padding: 8px; border-radius: 6px; margin-bottom: 10px; }
+        .review-item { text-align: left; padding: 8px; border-bottom: 1px solid #eee; font-size: 13px; }
     </style>
 </head>
 <body>
 
-    <h1>น้องซ้อมแข่ง: Vocab Practice</h1>
-    
-    <div class="filter-container">
-        <label for="weekSelect"><b>เลือกบทเรียน: </b></label>
-        <select id="weekSelect" onchange="changeWeek()">
-            <option value="all">รวมทุกบทเรียน (Week 1-13)</option>
-            <option value="Week 1">Week 1</option>
-            <option value="Week 2">Week 2</option>
-            <option value="Week 3">Week 3</option>
-            <option value="Week 4">Week 4</option>
-            <option value="Week 5">Week 5</option>
-            <option value="Week 6">Week 6</option>
-            <option value="Week 7">Week 7</option>
-            <option value="Week 8">Week 8</option>
-            <option value="Week 9">Week 9</option>
-            <option value="Week 10">Week 10</option>
-            <option value="Week 11">Week 11</option>
-            <option value="Week 12">Week 12</option>
-            <option value="Week 13">Week 13</option>
-        </select>
+<div class="container">
+
+    <!-- ================= 1. หน้าแรก (HUB) ================= -->
+    <div id="pageHub">
+        <h1 style="color:#2c3e50; font-size:24px;">🏆 Vocab Practice Center</h1>
+        <p style="color:#7f8c8d; font-size:14px; margin-bottom:20px;">เลือกโหมดการเรียนรู้สำหรับน้องเจย์โชว</p>
+
+        <div class="mode-card" onclick="openPracticeSetup()">
+            <h3>📖 1. โหมดฝึกหัด (Practice Mode)</h3>
+            <p>ท่องจำศัพท์ ทบทวนความจำ มีภาพ เสียงอ่าน และคำใบ้สลับอักษร</p>
+        </div>
+
+        <div class="mode-card" onclick="openExamSetup('choice')">
+            <h3>⏱️ 2. จำลองแข่ง: เลือกตอบ (Choice Exam)</h3>
+            <p>สอบจับเวลา ข้อละ 10 วินาที คำนวณคะแนนและเฉลยละเอียด</p>
+        </div>
+
+        <div class="mode-card" onclick="openExamSetup('write')">
+            <h3>✏️ 3. จำลองแข่ง: สะกดคำ (Spelling Exam)</h3>
+            <p>ท้าทายการพิมพ์สะกดคำศัพท์ตามความหมาย โดยไม่มีคำใบ้</p>
+        </div>
     </div>
 
-    <div>
-        <button class="mode-btn active" onclick="switchMode('flashcard')">1. โหมดท่อง</button>
-        <button class="mode-btn" onclick="switchMode('choice')">2. โหมดอ่าน</button>
-        <button class="mode-btn" onclick="switchMode('write')">3. โหมดเขียน</button>
+    <!-- ================= 2. โหมดฝึกหัด (PRACTICE) ================= -->
+    <div id="pagePractice" class="hidden">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+            <button class="btn btn-secondary" onclick="showPage('pageHub')">◄ หน้าหลัก</button>
+            <select id="pracWeekSelect" onchange="initPractice()" style="padding:5px; font-weight:bold;">
+                <option value="all">รวมทุกบทเรียน (Week 1-13)</option>
+                <option value="Week 1">Week 1</option><option value="Week 2">Week 2</option>
+                <!-- เพิ่ม Week อื่นๆ ได้ตามต้องการ -->
+            </select>
+        </div>
+
+        <div style="margin: 10px 0;">
+            <button class="btn btn-primary" id="btnP1" onclick="setPracSubMode('flashcard')">ท่องจำ</button>
+            <button class="btn btn-secondary" id="btnP2" onclick="setPracSubMode('choice')">อ่านตอบ</button>
+            <button class="btn btn-secondary" id="btnP3" onclick="setPracSubMode('write')">เขียนตอบ</button>
+        </div>
+
+        <div class="card" id="pracCard"></div>
+
+        <div>
+            <button class="btn btn-secondary" onclick="prevPrac()">◄ ก่อนหน้า</button>
+            <span id="pracProgress" style="font-weight:bold; margin:0 10px;">1 / 10</span>
+            <button class="btn btn-secondary" onclick="nextPrac()">ถัดไป ►</button>
+        </div>
     </div>
 
-    <div class="card" id="appCard"></div>
-
-    <div>
-        <button class="nav-btn" onclick="prevWord()">◄ ย้อนกลับ</button>
-        <span id="progress" style="font-weight:bold;">1 / 12</span>
-        <button class="nav-btn" onclick="nextWord()">ถัดไป ►</button>
+    <!-- ================= 3. โหมดแข่งขัน (EXAM SETUP & GAME) ================= -->
+    <div id="pageExamSetup" class="card hidden">
+        <h2>⚙️ ตั้งค่าการสอบ</h2>
+        <p>บทเรียน: 
+            <select id="examWeekSelect">
+                <option value="all">ทุกบทเรียน (Week 1-13)</option>
+                <option value="Week 1">Week 1</option><option value="Week 2">Week 2</option>
+            </select>
+        </p>
+        <p>จำนวนข้อ: 
+            <select id="examAmountSelect">
+                <option value="10">10 ข้อ</option>
+                <option value="20">20 ข้อ</option>
+            </select>
+        </p>
+        <button class="btn btn-success" style="width:100%" onclick="startExam()">🚀 เริ่มทำข้อสอบ</button>
+        <br><br>
+        <button class="btn btn-secondary" onclick="showPage('pageHub')">ยกเลิก</button>
     </div>
+
+    <div id="pageExam" class="card hidden">
+        <div class="timer-bar" id="timerBar"></div>
+        <div class="stats-header">
+            <span>ข้อ: <span id="eQNum">1</span>/<span id="eQTotal">10</span></span>
+            <span>⏱️ <span id="eTime">10</span>s</span>
+            <span>คะแนน: <span id="eScore">0</span></span>
+        </div>
+
+        <img id="eImg" class="flash-img" src="" alt="vocab">
+        <div id="eQuestion" style="font-size:20px; font-weight:bold; margin-bottom:10px;"></div>
+
+        <div id="eChoiceBox" class="options"></div>
+        <div id="eWriteBox" class="hidden">
+            <input type="text" id="eInput" placeholder="พิมพ์คำตอบ..." autocomplete="off">
+            <button class="btn btn-success" style="width:80%" onclick="submitWriteExam()">ส่งคำตอบ</button>
+        </div>
+    </div>
+
+    <div id="pageSummary" class="card hidden">
+        <h2>🎉 สรุปผลสอบ</h2>
+        <h1 style="color:#3498db; font-size:40px; margin:10px 0;" id="sumScore">0 / 10</h1>
+        <div id="reviewContainer"></div>
+        <br>
+        <button class="btn btn-primary" style="width:100%" onclick="showPage('pageHub')">กลับหน้าหลัก</button>
+    </div>
+
+</div>
 
 <script>
+// ---------------- ฐานข้อมูลคำศัพท์ (แก้ที่นี่จุดเดียว ใช้ได้ทั้งระบบ) ----------------
 const allVocab = [
-    // Week 1
-    { week: "Week 1", word: "place value", pos: "n.", meaning: "ค่าประจำหลัก", subject: "Maths", img: "https://images.unsplash.com/photo-1596495578065-6e0763fa1178?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 1", word: "expand", pos: "v.", meaning: "กระจาย", subject: "Maths", img: "https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 1", word: "tens", pos: "n.", meaning: "หลักสิบ", subject: "Maths", img: "https://images.unsplash.com/photo-1611348586804-61bf6c080437?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 1", word: "parent", pos: "n.", meaning: "ผู้ปกครอง", subject: "Science", img: "https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 1", word: "genetic", pos: "adj.", meaning: "เกี่ยวกับพันธุศาสตร์", subject: "Science", img: "https://images.unsplash.com/photo-1530026405186-ed1f139313f8?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 1", word: "generation", pos: "n.", meaning: "รุ่น", subject: "Science", img: "https://images.unsplash.com/photo-1535591273668-578e31182c4f?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 1", word: "behavior", pos: "n.", meaning: "พฤติกรรม", subject: "Social Studies", img: "https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 1", word: "believe", pos: "v.", meaning: "เชื่อ", subject: "Social Studies", img: "https://images.unsplash.com/photo-1507668077129-56e32842fceb?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 1", word: "monk", pos: "n.", meaning: "พระสงฆ์", subject: "Social Studies", img: "https://images.unsplash.com/photo-1561361513-2d000a50f0dc?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 1", word: "eight", pos: "n.", meaning: "แปด", subject: "Language", img: "https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 1", word: "old", pos: "adj.", meaning: "เก่าแก่", subject: "Language", img: "https://images.unsplash.com/photo-1520114878144-6123749968dd?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 1", word: "counting", pos: "n.", meaning: "การนับ", subject: "Language", img: "https://images.unsplash.com/photo-1501386761578-eac5c94b800a?auto=format&fit=crop&w=500&q=80" },
-
-    // Week 2
-    { week: "Week 2", word: "hundreds", pos: "n.", meaning: "หลักร้อย", subject: "Maths", img: "https://images.unsplash.com/photo-1596495578065-6e0763fa1178?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 2", word: "thousands", pos: "n.", meaning: "หลักพัน", subject: "Maths", img: "https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 2", word: "compare", pos: "v.", meaning: "เปรียบเทียบ", subject: "Maths", img: "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 2", word: "offspring", pos: "n.", meaning: "ลูกหลาน", subject: "Science", img: "https://images.unsplash.com/photo-1535591273668-578e31182c4f?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 2", word: "reproduction", pos: "n.", meaning: "การสืบพันธุ์", subject: "Science", img: "https://images.unsplash.com/photo-1530026405186-ed1f139313f8?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 2", word: "adapt", pos: "v.", meaning: "ปรับ", subject: "Science", img: "https://images.unsplash.com/photo-1518020382113-a7e8fc38eac9?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 2", word: "Lord Buddha", pos: "n.", meaning: "พระพุทธเจ้า", subject: "Social Studies", img: "https://images.unsplash.com/photo-1561361513-2d000a50f0dc?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 2", word: "suffer", pos: "v.", meaning: "ทุกข์ทรมาน", subject: "Social Studies", img: "https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 2", word: "marry", pos: "v.", meaning: "แต่งงาน", subject: "Social Studies", img: "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 2", word: "shape", pos: "n.", meaning: "รูปทรง", subject: "Language", img: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 2", word: "plus", pos: "prep.", meaning: "บวก", subject: "Language", img: "https://images.unsplash.com/photo-1611348586804-61bf6c080437?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 2", word: "rectangle", pos: "n.", meaning: "สี่เหลี่ยมผืนผ้า", subject: "Language", img: "https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?auto=format&fit=crop&w=500&q=80" },
-
-    // Week 3
-    { week: "Week 3", word: "counting", pos: "n.", meaning: "การนับ", subject: "Maths", img: "https://images.unsplash.com/photo-1501386761578-eac5c94b800a?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 3", word: "digit", pos: "n.", meaning: "ตัวเลข", subject: "Maths", img: "https://images.unsplash.com/photo-1596495578065-6e0763fa1178?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 3", word: "number", pos: "n.", meaning: "จำนวน", subject: "Maths", img: "https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 3", word: "extinct", pos: "adj.", meaning: "สูญพันธุ์", subject: "Science", img: "https://images.unsplash.com/photo-1518020382113-a7e8fc38eac9?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 3", word: "disaster", pos: "n.", meaning: "ภัยพิบัติ", subject: "Science", img: "https://images.unsplash.com/photo-1541888946425-d0fbb186a5b2?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 3", word: "disease", pos: "n.", meaning: "โรค", subject: "Science", img: "https://images.unsplash.com/photo-1584634731339-252c581abfc5?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 3", word: "believe", pos: "v.", meaning: "เชื่อ", subject: "Social Studies", img: "https://images.unsplash.com/photo-1507668077129-56e32842fceb?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 3", word: "India", pos: "n.", meaning: "ประเทศอินเดีย", subject: "Social Studies", img: "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 3", word: "Lord", pos: "n.", meaning: "พระเยซูคริสต์", subject: "Social Studies", img: "https://images.unsplash.com/photo-1561361513-2d000a50f0dc?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 3", word: "equal", pos: "adj.", meaning: "เท่ากัน", subject: "Language", img: "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 3", word: "figure", pos: "n.", meaning: "ตัวเลข", subject: "Language", img: "https://images.unsplash.com/photo-1611348586804-61bf6c080437?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 3", word: "total", pos: "n.", meaning: "ผลรวม", subject: "Language", img: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=500&q=80" },
-
-    // Week 4
-    { week: "Week 4", word: "equal", pos: "adj.", meaning: "เท่ากัน", subject: "Maths", img: "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 4", word: "expansion", pos: "n.", meaning: "การกระจาย", subject: "Maths", img: "https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 4", word: "fewer than", pos: "phrase", meaning: "น้อยกว่า", subject: "Maths", img: "https://images.unsplash.com/photo-1509114397022-ed747cca3f65?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 4", word: "mammal", pos: "n.", meaning: "สัตว์เลี้ยงลูกด้วยนม", subject: "Science", img: "https://images.unsplash.com/photo-1557050543-4d5f4e07ef46?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 4", word: "reptile", pos: "n.", meaning: "สัตว์เลื้อยคลาน", subject: "Science", img: "https://images.unsplash.com/photo-1504450758481-7338eba7524a?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 4", word: "amphibian", pos: "n.", meaning: "สัตว์ครึ่งบกครึ่งน้ำ", subject: "Science", img: "https://images.unsplash.com/photo-1550853024-fae8cd4be47f?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 4", word: "Four Noble Truths", pos: "n.", meaning: "อริยสัจ 4", subject: "Social Studies", img: "https://images.unsplash.com/photo-1561361513-2d000a50f0dc?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 4", word: "happy", pos: "adj.", meaning: "มีความสุข", subject: "Social Studies", img: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 4", word: "wise", pos: "adj.", meaning: "ฉลาด", subject: "Social Studies", img: "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 4", word: "notebook", pos: "n.", meaning: "สมุด", subject: "Language", img: "https://images.unsplash.com/photo-1517842645767-c639042777db?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 4", word: "mathematics", pos: "n.", meaning: "คณิตศาสตร์", subject: "Language", img: "https://images.unsplash.com/photo-1596495578065-6e0763fa1178?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 4", word: "symbol", pos: "n.", meaning: "สัญลักษณ์", subject: "Language", img: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=500&q=80" },
-
-    // Week 5
-    { week: "Week 5", word: "greater than", pos: "phrase", meaning: "มากกว่า", subject: "Maths", img: "https://images.unsplash.com/photo-1611348586804-61bf6c080437?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 5", word: "group", pos: "n.", meaning: "กลุ่ม", subject: "Maths", img: "https://images.unsplash.com/photo-1531206715517-5c0ba140b2b8?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 5", word: "least", pos: "adj.", meaning: "น้อยที่สุด", subject: "Maths", img: "https://images.unsplash.com/photo-1509114397022-ed747cca3f65?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 5", word: "carnivore", pos: "n.", meaning: "สัตว์กินเนื้อ", subject: "Science", img: "https://images.unsplash.com/photo-1534188753412-3e26d0d618d6?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 5", word: "herbivore", pos: "n.", meaning: "สัตว์กินพืช", subject: "Science", img: "https://images.unsplash.com/photo-1557050543-4d5f4e07ef46?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 5", word: "omnivore", pos: "n.", meaning: "สัตว์กินเนื้อและพืช", subject: "Science", img: "https://images.unsplash.com/photo-1474511320723-9a56873867b5?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 5", word: "forest", pos: "n.", meaning: "ป่า", subject: "Social Studies", img: "https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 5", word: "orphan", pos: "n.", meaning: "เด็กกำพร้า", subject: "Social Studies", img: "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 5", word: "kill", pos: "v.", meaning: "ฆ่า", subject: "Social Studies", img: "https://images.unsplash.com/photo-1541888946425-d0fbb186a5b2?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 5", word: "Monday", pos: "n.", meaning: "วันจันทร์", subject: "Language", img: "https://images.unsplash.com/photo-1506784983877-45594efa4cbe?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 5", word: "Sunday", pos: "n.", meaning: "วันอาทิตย์", subject: "Language", img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 5", word: "exercise", pos: "v.", meaning: "ออกกำลังกาย", subject: "Language", img: "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=500&q=80" },
-
-    // Week 6
-    { week: "Week 6", word: "less than", pos: "phrase", meaning: "น้อยกว่า", subject: "Maths", img: "https://images.unsplash.com/photo-1509114397022-ed747cca3f65?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 6", word: "more than", pos: "phrase", meaning: "มากกว่า", subject: "Maths", img: "https://images.unsplash.com/photo-1611348586804-61bf6c080437?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 6", word: "process", pos: "n.", meaning: "กระบวนการ", subject: "Maths", img: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 6", word: "something", pos: "pron.", meaning: "บางสิ่งบางอย่าง", subject: "Science", img: "https://images.unsplash.com/photo-1507668077129-56e32842fceb?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 6", word: "need", pos: "v.", meaning: "ต้องการ", subject: "Science", img: "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 6", word: "useful", pos: "adj.", meaning: "มีประโยชน์", subject: "Science", img: "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 6", word: "pray", pos: "v.", meaning: "อธิษฐาน", subject: "Social Studies", img: "https://images.unsplash.com/photo-1561361513-2d000a50f0dc?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 6", word: "free", pos: "adj.", meaning: "อิสระ", subject: "Social Studies", img: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 6", word: "army", pos: "n.", meaning: "กองทัพ", subject: "Social Studies", img: "https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 6", word: "picture", pos: "n.", meaning: "ภาพ", subject: "Language", img: "https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 6", word: "draw", pos: "v.", meaning: "วาดภาพ", subject: "Language", img: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 6", word: "listen", pos: "n.", meaning: "ฟัง", subject: "Language", img: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?auto=format&fit=crop&w=500&q=80" },
-
-    // Week 7
-    { week: "Week 7", word: "same", pos: "adj.", meaning: "เหมือนกัน", subject: "Maths", img: "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 7", word: "set", pos: "n.", meaning: "ชุด", subject: "Maths", img: "https://images.unsplash.com/photo-1531206715517-5c0ba140b2b8?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 7", word: "square", pos: "n.", meaning: "สี่เหลี่ยมจัตุรัส", subject: "Maths", img: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 7", word: "soil", pos: "n.", meaning: "ดิน", subject: "Science", img: "https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 7", word: "clay", pos: "n.", meaning: "ดินเหนียว", subject: "Science", img: "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 7", word: "sand", pos: "n.", meaning: "ทราย", subject: "Science", img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 7", word: "cut down", pos: "phrv.", meaning: "ตัดลง", subject: "Social Studies", img: "https://images.unsplash.com/photo-1520114878144-6123749968dd?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 7", word: "burn", pos: "v.", meaning: "เผา", subject: "Social Studies", img: "https://images.unsplash.com/photo-1541888946425-d0fbb186a5b2?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 7", word: "holy", pos: "adj.", meaning: "ศักดิ์สิทธิ์", subject: "Social Studies", img: "https://images.unsplash.com/photo-1561361513-2d000a50f0dc?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 7", word: "big", pos: "adj.", meaning: "ใหญ่", subject: "Language", img: "https://images.unsplash.com/photo-1557050543-4d5f4e07ef46?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 7", word: "thin", pos: "adj.", meaning: "ผอม", subject: "Language", img: "https://images.unsplash.com/photo-1519052537078-e6302a4968d4?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 7", word: "table", pos: "n.", meaning: "โต๊ะ", subject: "Language", img: "https://images.unsplash.com/photo-1530018607912-eff2daa1bac4?auto=format&fit=crop&w=500&q=80" },
-
-    // Week 8
-    { week: "Week 8", word: "add", pos: "v.", meaning: "เพิ่ม", subject: "Maths", img: "https://images.unsplash.com/photo-1596495578065-6e0763fa1178?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 8", word: "addition", pos: "n.", meaning: "การบวก", subject: "Maths", img: "https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 8", word: "altogether", pos: "adv.", meaning: "รวมทั้งหมด", subject: "Maths", img: "https://images.unsplash.com/photo-1611348586804-61bf6c080437?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 8", word: "humus", pos: "n.", meaning: "ปุ๋ยอินทรีย์", subject: "Science", img: "https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 8", word: "loam", pos: "n.", meaning: "ดินร่วน", subject: "Science", img: "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 8", word: "erosion", pos: "n.", meaning: "การกัดเซาะ", subject: "Science", img: "https://images.unsplash.com/photo-1518020382113-a7e8fc38eac9?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 8", word: "honest", pos: "adj.", meaning: "ซื่อสัตย์", subject: "Social Studies", img: "https://images.unsplash.com/photo-1507668077129-56e32842fceb?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 8", word: "truth", pos: "n.", meaning: "ความจริง", subject: "Social Studies", img: "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 8", word: "cross", pos: "n.", meaning: "ไม้กางเขน", subject: "Social Studies", img: "https://images.unsplash.com/photo-1561361513-2d000a50f0dc?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 8", word: "hand", pos: "n.", meaning: "มือ", subject: "Language", img: "https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 8", word: "shoulder", pos: "n.", meaning: "ไหล่", subject: "Language", img: "https://images.unsplash.com/photo-1519052537078-e6302a4968d4?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 8", word: "hair", pos: "n.", meaning: "เส้นผม, เส้นขน", subject: "Language", img: "https://images.unsplash.com/photo-1520114878144-6123749968dd?auto=format&fit=crop&w=500&q=80" },
-
-    // Week 9
-    { week: "Week 9", word: "answer", pos: "n.", meaning: "คำตอบ", subject: "Maths", img: "https://images.unsplash.com/photo-1501386761578-eac5c94b800a?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 9", word: "way", pos: "n.", meaning: "ทาง , วิธี", subject: "Maths", img: "https://images.unsplash.com/photo-1596495578065-6e0763fa1178?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 9", word: "different", pos: "adj.", meaning: "แตกต่าง", subject: "Maths", img: "https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 9", word: "canal", pos: "n.", meaning: "คลอง", subject: "Science", img: "https://images.unsplash.com/photo-1518020382113-a7e8fc38eac9?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 9", word: "breathe", pos: "v.", meaning: "หายใจ", subject: "Science", img: "https://images.unsplash.com/photo-1541888946425-d0fbb186a5b2?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 9", word: "sponge", pos: "n.", meaning: "ฟองน้ำ", subject: "Science", img: "https://images.unsplash.com/photo-1584634731339-252c581abfc5?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 9", word: "priest", pos: "n.", meaning: "นักบวช", subject: "Social Studies", img: "https://images.unsplash.com/photo-1507668077129-56e32842fceb?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 9", word: "Veda", pos: "n.", meaning: "คัมภีร์พระเวท", subject: "Social Studies", img: "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 9", word: "mosque", pos: "n.", meaning: "มัสยิด", subject: "Social Studies", img: "https://images.unsplash.com/photo-1561361513-2d000a50f0dc?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 9", word: "eye", pos: "n.", meaning: "ตา", subject: "Language", img: "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 9", word: "mouth", pos: "n.", meaning: "ปาก", subject: "Language", img: "https://images.unsplash.com/photo-1611348586804-61bf6c080437?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 9", word: "head", pos: "n.", meaning: "ศีรษะ", subject: "Language", img: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=500&q=80" },
-
-    // Week 10
-    { week: "Week 10", word: "each", pos: "adj.", meaning: "แต่ละ", subject: "Maths", img: "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 10", word: "example", pos: "n.", meaning: "ตัวอย่าง", subject: "Maths", img: "https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 10", word: "exercise", pos: "v.", meaning: "ออกกำลังกาย", subject: "Maths", img: "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 10", word: "forest", pos: "n.", meaning: "ป่า", subject: "Science", img: "https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 10", word: "provide", pos: "v.", meaning: "จัดเตรียม", subject: "Science", img: "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 10", word: "flood", pos: "v.", meaning: "น้ำท่วม", subject: "Science", img: "https://images.unsplash.com/photo-1541888946425-d0fbb186a5b2?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 10", word: "symbol", pos: "n.", meaning: "สัญลักษณ์", subject: "Social Studies", img: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 10", word: "most", pos: "adj.", meaning: "มากที่สุด", subject: "Social Studies", img: "https://images.unsplash.com/photo-1611348586804-61bf6c080437?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 10", word: "Ganesha", pos: "n.", meaning: "พระพิฆเนศ", subject: "Social Studies", img: "https://images.unsplash.com/photo-1561361513-2d000a50f0dc?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 10", word: "face", pos: "n.", meaning: "ใบหน้า", subject: "Language", img: "https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 10", word: "lip", pos: "n.", meaning: "ริมฝีปาก", subject: "Language", img: "https://images.unsplash.com/photo-1520114878144-6123749968dd?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 10", word: "shorter", pos: "adj.", meaning: "สั้นกว่า", subject: "Language", img: "https://images.unsplash.com/photo-1509114397022-ed747cca3f65?auto=format&fit=crop&w=500&q=80" },
-
-    // Week 11
-    { week: "Week 11", word: "fill", pos: "v.", meaning: "เติม", subject: "Maths", img: "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 11", word: "find", pos: "v.", meaning: "หา", subject: "Maths", img: "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 11", word: "plus", pos: "prep.", meaning: "บวก", subject: "Maths", img: "https://images.unsplash.com/photo-1611348586804-61bf6c080437?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 11", word: "prevent", pos: "v.", meaning: "ป้องกัน", subject: "Science", img: "https://images.unsplash.com/photo-1584634731339-252c581abfc5?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 11", word: "destroy", pos: "v.", meaning: "ทำลาย", subject: "Science", img: "https://images.unsplash.com/photo-1541888946425-d0fbb186a5b2?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 11", word: "wood", pos: "n.", meaning: "ไม้", subject: "Science", img: "https://images.unsplash.com/photo-1520114878144-6123749968dd?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 11", word: "family", pos: "n.", meaning: "ครอบครัว", subject: "Social Studies", img: "https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 11", word: "community", pos: "n.", meaning: "ชุมชน", subject: "Social Studies", img: "https://images.unsplash.com/photo-1531206715517-5c0ba140b2b8?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 11", word: "custom", pos: "n.", meaning: "ประเพณี", subject: "Social Studies", img: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 11", word: "animal", pos: "n.", meaning: "สัตว์", subject: "Language", img: "https://images.unsplash.com/photo-1474511320723-9a56873867b5?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 11", word: "leg", pos: "n.", meaning: "ขา", subject: "Language", img: "https://images.unsplash.com/photo-1519052537078-e6302a4968d4?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 11", word: "elephant", pos: "n.", meaning: "ช้าง", subject: "Language", img: "https://images.unsplash.com/photo-1557050543-4d5f4e07ef46?auto=format&fit=crop&w=500&q=80" },
-
-    // Week 12
-    { week: "Week 12", word: "step", pos: "n.", meaning: "ขั้นตอน", subject: "Maths", img: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 12", word: "subtraction", pos: "n.", meaning: "การลบ", subject: "Maths", img: "https://images.unsplash.com/photo-1509114397022-ed747cca3f65?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 12", word: "sum", pos: "n.", meaning: "ผลรวม", subject: "Maths", img: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 12", word: "cloth", pos: "n.", meaning: "ผ้า", subject: "Science", img: "https://images.unsplash.com/photo-1583496661160-fb5886a0aaaa?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 12", word: "seashell", pos: "n.", meaning: "เปลือกหอย", subject: "Science", img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 12", word: "steel", pos: "n.", meaning: "เหล็ก", subject: "Science", img: "https://images.unsplash.com/photo-1518020382113-a7e8fc38eac9?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 12", word: "different", pos: "adj.", meaning: "แตกต่าง", subject: "Social Studies", img: "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 12", word: "environment", pos: "n.", meaning: "สิ่งแวดล้อม", subject: "Social Studies", img: "https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 12", word: "famous", pos: "adj.", meaning: "มีชื่อเสียง", subject: "Social Studies", img: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 12", word: "monkey", pos: "n.", meaning: "ลิง", subject: "Language", img: "https://images.unsplash.com/photo-1540573133985-778788170483?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 12", word: "eye", pos: "n.", meaning: "ตา", subject: "Language", img: "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 12", word: "cheek", pos: "n.", meaning: "แก้ม", subject: "Language", img: "https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?auto=format&fit=crop&w=500&q=80" },
-
-    // Week 13
-    { week: "Week 13", word: "show", pos: "v.", meaning: "แสดง", subject: "Maths", img: "https://images.unsplash.com/photo-1501386761578-eac5c94b800a?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 13", word: "bar graph", pos: "n.", meaning: "แผนภูมิแท่ง", subject: "Maths", img: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 13", word: "below", pos: "prep.", meaning: "ด้านล่าง", subject: "Maths", img: "https://images.unsplash.com/photo-1509114397022-ed747cca3f65?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 13", word: "determine", pos: "v.", meaning: "กำหนด", subject: "Science", img: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 13", word: "property", pos: "n.", meaning: "คุณสมบัติ", subject: "Science", img: "https://images.unsplash.com/photo-1507668077129-56e32842fceb?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 13", word: "material", pos: "n.", meaning: "วัสดุ", subject: "Science", img: "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 13", word: "celebrate", pos: "v.", meaning: "ฉลอง", subject: "Social Studies", img: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 13", word: "government", pos: "n.", meaning: "รัฐบาล", subject: "Social Studies", img: "https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 13", word: "create", pos: "v.", meaning: "สร้าง", subject: "Social Studies", img: "https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 13", word: "blouse", pos: "n.", meaning: "เสื้อเชิ้ตสตรี", subject: "Language", img: "https://images.unsplash.com/photo-1598554747436-c9293d6a588f?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 13", word: "skirt", pos: "n.", meaning: "กระโปรง", subject: "Language", img: "https://images.unsplash.com/photo-1583496661160-fb5886a0aaaa?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 13", word: "dress", pos: "v.", meaning: "แต่งตัว", subject: "Language", img: "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=500&q=80" }
+    { week: "Week 1", word: "place value", pos: "n.", meaning: "ค่าประจำหลัก", img: "https://images.unsplash.com/photo-1596495578065-6e0763fa1178?auto=format&fit=crop&w=500&q=80" },
+    { week: "Week 1", word: "expand", pos: "v.", meaning: "กระจาย", img: "https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=500&q=80" },
+    { week: "Week 1", word: "tens", pos: "n.", meaning: "หลักสิบ", img: "https://images.unsplash.com/photo-1611348586804-61bf6c080437?auto=format&fit=crop&w=500&q=80" },
+    { week: "Week 2", word: "hundreds", pos: "n.", meaning: "หลักร้อย", img: "https://images.unsplash.com/photo-1596495578065-6e0763fa1178?auto=format&fit=crop&w=500&q=80" },
+    { week: "Week 2", word: "compare", pos: "v.", meaning: "เปรียบเทียบ", img: "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?auto=format&fit=crop&w=500&q=80" }
 ];
 
-let vocabList = [...allVocab];
-let currentIndex = 0;
-let currentMode = 'flashcard';
-
-function changeWeek() {
-    const selectedWeek = document.getElementById('weekSelect').value;
-    if (selectedWeek === 'all') {
-        vocabList = [...allVocab];
-    } else {
-        vocabList = allVocab.filter(item => item.week === selectedWeek);
-    }
-    currentIndex = 0;
-    render();
+// Navigation Control
+function showPage(pageId) {
+    ['pageHub', 'pagePractice', 'pageExamSetup', 'pageExam', 'pageSummary'].forEach(id => {
+        document.getElementById(id).classList.add('hidden');
+    });
+    document.getElementById(pageId).classList.remove('hidden');
 }
 
 function speak(text) {
@@ -271,92 +161,207 @@ function speak(text) {
     window.speechSynthesis.speak(utterance);
 }
 
-function render() {
-    const card = document.getElementById('appCard');
-    if (vocabList.length === 0) return;
-    const item = vocabList[currentIndex];
-    document.getElementById('progress').innerText = `${currentIndex + 1} / ${vocabList.length}`;
+function scrambleWord(word) {
+    return word.split(' ').map(sub => {
+        let arr = sub.toLowerCase().replace(/[^a-z]/g, '').split('');
+        if (arr.length <= 1) return sub.toUpperCase();
+        for (let i = arr.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr.join('').toUpperCase();
+    }).join(' ');
+}
 
-    if (currentMode === 'flashcard') {
+// ---------------- PRACTICE SYSTEM ----------------
+let pracList = [];
+let pracIndex = 0;
+let pracMode = 'flashcard';
+
+function openPracticeSetup() {
+    showPage('pagePractice');
+    initPractice();
+}
+
+function initPractice() {
+    const w = document.getElementById('pracWeekSelect').value;
+    pracList = (w === 'all') ? [...allVocab] : allVocab.filter(i => i.week === w);
+    pracIndex = 0;
+    renderPractice();
+}
+
+function setPracSubMode(mode) {
+    pracMode = mode;
+    ['btnP1', 'btnP2', 'btnP3'].forEach(b => document.getElementById(b).className = 'btn btn-secondary');
+    if(mode==='flashcard') document.getElementById('btnP1').className = 'btn btn-primary';
+    if(mode==='choice') document.getElementById('btnP2').className = 'btn btn-primary';
+    if(mode==='write') document.getElementById('btnP3').className = 'btn btn-primary';
+    renderPractice();
+}
+
+function renderPractice() {
+    if(!pracList.length) return;
+    const item = pracList[pracIndex];
+    const card = document.getElementById('pracCard');
+    document.getElementById('pracProgress').innerText = `${pracIndex + 1} / ${pracList.length}`;
+
+    if(pracMode === 'flashcard') {
         card.innerHTML = `
-            <div style="color:#e67e22; font-size:12px; font-weight:bold; margin-bottom:5px;">[${item.week} - ${item.subject}]</div>
-            <img class="flash-img" src="${item.img}" alt="${item.word}">
+            <img class="flash-img" src="${item.img}">
             <div class="word">${item.word}</div>
-            <div class="pos">(${item.pos})</div>
-            <button class="btn-sound" onclick="speak('${item.word}')">🔊 ฟังเสียงอ่าน</button>
-            <hr style="margin:15px 0; border:0; border-top:1px solid #eee;">
+            <button class="btn btn-success" onclick="speak('${item.word}')">🔊 ฟังเสียง</button>
+            <hr>
             <div class="meaning">${item.meaning}</div>
         `;
-    } else if (currentMode === 'choice') {
-        let options = [item.meaning];
-        while(options.length < Math.min(4, vocabList.length)) {
-            let rand = vocabList[Math.floor(Math.random() * vocabList.length)].meaning;
-            if(!options.includes(rand)) options.push(rand);
+    } else if(pracMode === 'choice') {
+        let opts = [item.meaning];
+        while(opts.length < Math.min(4, pracList.length)) {
+            let r = pracList[Math.floor(Math.random()*pracList.length)].meaning;
+            if(!opts.includes(r)) opts.push(r);
         }
-        options.sort(() => Math.random() - 0.5);
-
+        opts.sort(() => Math.random() - 0.5);
         card.innerHTML = `
-            <div style="color:#e67e22; font-size:12px; font-weight:bold; margin-bottom:5px;">[${item.week} - ${item.subject}]</div>
-            <img class="flash-img" src="${item.img}" alt="${item.word}">
+            <img class="flash-img" src="${item.img}">
             <div class="word">${item.word}</div>
-            <button class="btn-sound" onclick="speak('${item.word}')">🔊 ฟังเสียง</button>
-            <p style="margin:10px 0 5px 0;">เลือกคำแปลที่ถูกต้อง:</p>
-            <div class="options">
-                ${options.map(opt => `<button class="opt-btn" onclick="checkChoice('${opt}', '${item.meaning}')">${opt}</button>`).join('')}
-            </div>
-            <div class="result" id="result"></div>
+            <div class="options">${opts.map(o => `<button class="opt-btn" onclick="checkPracChoice('${o}','${item.meaning}')">${o}</button>`).join('')}</div>
+            <div id="pracRes" style="margin-top:10px; font-weight:bold;"></div>
         `;
-    } else if (currentMode === 'write') {
+    } else if(pracMode === 'write') {
         card.innerHTML = `
-            <div style="color:#e67e22; font-size:12px; font-weight:bold; margin-bottom:5px;">[${item.week} - ${item.subject}]</div>
-            <img class="flash-img" src="${item.img}" alt="${item.word}">
-            <div class="meaning">${item.meaning} (${item.pos})</div>
-            <p style="margin:5px 0 10px 0;">พิมพ์คำศัพท์ภาษาอังกฤษ:</p>
-            <input type="text" id="writeInput" placeholder="พิมพ์ที่นี่..." autocomplete="off">
-            <br>
-            <button class="check-btn" onclick="checkWrite('${item.word}')">ตรวจคำตอบ</button>
-            <div class="result" id="result"></div>
+            <img class="flash-img" src="${item.img}">
+            <div class="meaning">${item.meaning}</div>
+            <div class="hint-box">💡 คำใบ้: ${scrambleWord(item.word)}</div>
+            <input type="text" id="pracInp" placeholder="พิมพ์คำศัพท์...">
+            <button class="btn btn-success" onclick="checkPracWrite('${item.word}')">ตรวจ</button>
+            <div id="pracRes" style="margin-top:10px; font-weight:bold;"></div>
         `;
     }
 }
 
-function checkChoice(selected, correct) {
-    const res = document.getElementById('result');
-    if (selected === correct) {
-        res.innerHTML = "<span style='color:green;'>✓ ถูกต้อง!</span>";
-        speak(vocabList[currentIndex].word);
+function checkPracChoice(sel, cor) {
+    document.getElementById('pracRes').innerHTML = (sel===cor) ? "<span style='color:green;'>✓ ถูกต้อง!</span>" : "<span style='color:red;'>✗ ลองใหม่นะ</span>";
+    if(sel===cor) speak(pracList[pracIndex].word);
+}
+
+function checkPracWrite(cor) {
+    const val = document.getElementById('pracInp').value.trim().toLowerCase();
+    document.getElementById('pracRes').innerHTML = (val===cor.toLowerCase()) ? "<span style='color:green;'>✓ ถูกต้อง!</span>" : `<span style='color:red;'>✗ เฉลย: ${cor}</span>`;
+    if(val===cor.toLowerCase()) speak(cor);
+}
+
+function nextPrac() { if(pracIndex < pracList.length-1) { pracIndex++; renderPractice(); } }
+function prevPrac() { if(pracIndex > 0) { pracIndex--; renderPractice(); } }
+
+// ---------------- EXAM SYSTEM ----------------
+let examModeType = '';
+let examQuestions = [];
+let examIndex = 0;
+let examScore = 0;
+let examTimer = null;
+let examTimeLeft = 10;
+let examAnswers = [];
+
+function openExamSetup(type) {
+    examModeType = type;
+    showPage('pageExamSetup');
+}
+
+function startExam() {
+    const w = document.getElementById('examWeekSelect').value;
+    const amt = parseInt(document.getElementById('examAmountSelect').value);
+    let pool = (w === 'all') ? [...allVocab] : allVocab.filter(i => i.week === w);
+    
+    pool.sort(() => Math.random() - 0.5);
+    examQuestions = pool.slice(0, Math.min(amt, pool.length));
+    
+    examIndex = 0; examScore = 0; examAnswers = [];
+    showPage('pageExam');
+    document.getElementById('eQTotal').innerText = examQuestions.length;
+    loadExamQuestion();
+}
+
+function loadExamQuestion() {
+    if(examIndex >= examQuestions.length) { endExam(); return; }
+    
+    const q = examQuestions[examIndex];
+    document.getElementById('eQNum').innerText = examIndex + 1;
+    document.getElementById('eScore').innerText = examScore;
+    document.getElementById('eImg').src = q.img;
+    
+    examTimeLeft = 10;
+    document.getElementById('eTime').innerText = examTimeLeft;
+    document.getElementById('timerBar').style.width = '100%';
+    clearInterval(examTimer);
+    examTimer = setInterval(updateExamTimer, 1000);
+
+    if(examModeType === 'choice') {
+        document.getElementById('eChoiceBox').classList.remove('hidden');
+        document.getElementById('eWriteBox').classList.add('hidden');
+        document.getElementById('eQuestion').innerText = q.word;
+
+        let opts = [q.meaning];
+        while(opts.length < 4 && opts.length < allVocab.length) {
+            let r = allVocab[Math.floor(Math.random()*allVocab.length)].meaning;
+            if(!opts.includes(r)) opts.push(r);
+        }
+        opts.sort(() => Math.random() - 0.5);
+        document.getElementById('eChoiceBox').innerHTML = opts.map(o => `<button class="opt-btn" onclick="submitChoiceExam('${o}')">${o}</button>`).join('');
     } else {
-        res.innerHTML = "<span style='color:red;'>✗ ยังไม่ถูก ลองใหม่นะ</span>";
+        document.getElementById('eChoiceBox').classList.add('hidden');
+        document.getElementById('eWriteBox').classList.remove('hidden');
+        document.getElementById('eQuestion').innerText = `${q.meaning} (${q.pos})`;
+        document.getElementById('eInput').value = '';
+        document.getElementById('eInput').focus();
     }
 }
 
-function checkWrite(correct) {
-    const input = document.getElementById('writeInput').value.trim().toLowerCase();
-    const res = document.getElementById('result');
-    if (input === correct.toLowerCase()) {
-        res.innerHTML = "<span style='color:green;'>✓ เก่งมาก! สะกดถูกต้อง</span>";
-        speak(correct);
-    } else {
-        res.innerHTML = `<span style='color:red;'>✗ คำที่ถูกคือ: ${correct}</span>`;
+function updateExamTimer() {
+    examTimeLeft--;
+    document.getElementById('eTime').innerText = examTimeLeft;
+    document.getElementById('timerBar').style.width = (examTimeLeft * 10) + '%';
+    if(examTimeLeft <= 0) {
+        clearInterval(examTimer);
+        recordExamAns(false, "หมดเวลา");
+        examIndex++; loadExamQuestion();
     }
 }
 
-function switchMode(mode) {
-    currentMode = mode;
-    document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
-    event.target.classList.add('active');
-    render();
+function submitChoiceExam(sel) {
+    clearInterval(examTimer);
+    const q = examQuestions[examIndex];
+    const isCor = (sel === q.meaning);
+    if(isCor) examScore++;
+    recordExamAns(isCor, sel);
+    examIndex++; loadExamQuestion();
 }
 
-function nextWord() {
-    if (currentIndex < vocabList.length - 1) { currentIndex++; render(); }
+function submitWriteExam() {
+    clearInterval(examTimer);
+    const val = document.getElementById('eInput').value.trim().toLowerCase();
+    const q = examQuestions[examIndex];
+    const isCor = (val === q.word.toLowerCase());
+    if(isCor) examScore++;
+    recordExamAns(isCor, val || "ไม่ได้ตอบ");
+    examIndex++; loadExamQuestion();
 }
 
-function prevWord() {
-    if (currentIndex > 0) { currentIndex--; render(); }
+function recordExamAns(isCor, ans) {
+    examAnswers.push({ q: examQuestions[examIndex], ans: ans, isCor: isCor });
 }
 
-render();
+function endExam() {
+    clearInterval(examTimer);
+    showPage('pageSummary');
+    document.getElementById('sumScore').innerText = `${examScore} / ${examQuestions.length}`;
+    
+    document.getElementById('reviewContainer').innerHTML = examAnswers.map((item, i) => `
+        <div class="review-item">
+            <b>${i+1}. ${item.q.word}</b> (${item.q.meaning})<br>
+            ตอบ: <span style="color:${item.isCor?'green':'red'}">${item.ans}</span>
+            ${!item.isCor ? ` | เฉลย: <b>${examModeType==='choice'?item.q.meaning:item.q.word}</b>` : ''}
+        </div>
+    `).join('');
+}
 </script>
 </body>
 </html>
