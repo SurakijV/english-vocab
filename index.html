@@ -24,8 +24,8 @@
         .mode-card p { margin: 0; font-size: 13px; color: #666; }
 
         /* Practice Mode Styles */
-		/* สามารถปรับเป็น 16 / 9 ได้ถ้ารูปที่คุณสร้างมาเป็นแนวนอนยาว */
-        .flash-img { width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: contain; border-radius: 10px; margin-bottom: 10px; background: #eef2f3; }
+        //.flash-img { width: 100%; height: 180px; object-fit: cover; border-radius: 10px; margin-bottom: 10px; background: #eef2f3; }
+        .flash-img { width: 100%; height: auto; aspect-ratio: 4 / 3; /* สามารถปรับเป็น 16 / 9 ได้ถ้ารูปที่คุณสร้างมาเป็นแนวนอนยาว */ object-fit: contain; border-radius: 10px;    margin-bottom: 10px; background: #eef2f3; }
 		.word { font-size: 30px; font-weight: bold; color: #2e86de; }
         .meaning { font-size: 20px; color: #2d3436; font-weight: bold; }
         .options { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
@@ -168,13 +168,13 @@
 const allVocab = [
     // Week 1
     { week: "Week 1", word: "place value", pos: "n.", meaning: "ค่าประจำหลัก", subject: "Maths", img: "./images/place_value.jpeg" },
-    { week: "Week 1", word: "expand", pos: "v.", meaning: "กระจาย", subject: "Maths", img: "https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 1", word: "tens", pos: "n.", meaning: "หลักสิบ", subject: "Maths", img: "https://images.unsplash.com/photo-1611348586804-61bf6c080437?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 1", word: "parent", pos: "n.", meaning: "ผู้ปกครอง", subject: "Science", img: "https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 1", word: "genetic", pos: "adj.", meaning: "เกี่ยวกับพันธุศาสตร์", subject: "Science", img: "https://images.unsplash.com/photo-1530026405186-ed1f139313f8?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 1", word: "generation", pos: "n.", meaning: "รุ่น", subject: "Science", img: "https://images.unsplash.com/photo-1535591273668-578e31182c4f?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 1", word: "behavior", pos: "n.", meaning: "พฤติกรรม", subject: "Social Studies", img: "https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 1", word: "believe", pos: "v.", meaning: "เชื่อ", subject: "Social Studies", img: "https://images.unsplash.com/photo-1507668077129-56e32842fceb?auto=format&fit=crop&w=500&q=80" },
+    { week: "Week 1", word: "expand", pos: "v.", meaning: "กระจาย", subject: "Maths", img: "./images/expand.jpeg" },
+    { week: "Week 1", word: "tens", pos: "n.", meaning: "หลักสิบ", subject: "Maths", img: "./images/tens.jpeg" },
+    { week: "Week 1", word: "parent", pos: "n.", meaning: "ผู้ปกครอง", subject: "Science", img: "./images/parent.jpeg" },
+    { week: "Week 1", word: "genetic", pos: "adj.", meaning: "เกี่ยวกับพันธุศาสตร์", subject: "Science", img: "./images/genetic.jpeg" },
+    { week: "Week 1", word: "generation", pos: "n.", meaning: "รุ่น", subject: "Science", img: "./images/generation.jpeg" },
+    { week: "Week 1", word: "behavior", pos: "n.", meaning: "พฤติกรรม", subject: "Social Studies", img: "./images/behavior.jpeg" },
+    { week: "Week 1", word: "believe", pos: "v.", meaning: "เชื่อ", subject: "Social Studies", img: "./images/believe.jpeg" },
     { week: "Week 1", word: "monk", pos: "n.", meaning: "พระสงฆ์", subject: "Social Studies", img: "https://images.unsplash.com/photo-1561361513-2d000a50f0dc?auto=format&fit=crop&w=500&q=80" },
     { week: "Week 1", word: "eight", pos: "n.", meaning: "แปด", subject: "Language", img: "https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?auto=format&fit=crop&w=500&q=80" },
     { week: "Week 1", word: "old", pos: "adj.", meaning: "เก่าแก่", subject: "Language", img: "https://images.unsplash.com/photo-1520114878144-6123749968dd?auto=format&fit=crop&w=500&q=80" },
