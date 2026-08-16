@@ -24,8 +24,8 @@
         .mode-card p { margin: 0; font-size: 13px; color: #666; }
 
         /* Practice Mode Styles */
-		/* สามารถปรับเป็น 16 / 9 ได้ถ้ารูปที่คุณสร้างมาเป็นแนวนอนยาว */
-        .flash-img { width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: contain; border-radius: 10px; margin-bottom: 10px; background: #eef2f3; }
+        //.flash-img { width: 100%; height: 180px; object-fit: cover; border-radius: 10px; margin-bottom: 10px; background: #eef2f3; }
+        .flash-img { width: 100%; height: auto; aspect-ratio: 4 / 3; /* สามารถปรับเป็น 16 / 9 ได้ถ้ารูปที่คุณสร้างมาเป็นแนวนอนยาว */ object-fit: contain; border-radius: 10px;    margin-bottom: 10px; background: #eef2f3; }
 		.word { font-size: 30px; font-weight: bold; color: #2e86de; }
         .meaning { font-size: 20px; color: #2d3436; font-weight: bold; }
         .options { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
@@ -168,45 +168,45 @@
 const allVocab = [
     // Week 1
     { week: "Week 1", word: "place value", pos: "n.", meaning: "ค่าประจำหลัก", subject: "Maths", img: "./images/place_value.jpeg" },
-    { week: "Week 1", word: "expand", pos: "v.", meaning: "กระจาย", subject: "Maths", img: "https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 1", word: "tens", pos: "n.", meaning: "หลักสิบ", subject: "Maths", img: "https://images.unsplash.com/photo-1611348586804-61bf6c080437?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 1", word: "parent", pos: "n.", meaning: "ผู้ปกครอง", subject: "Science", img: "https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 1", word: "genetic", pos: "adj.", meaning: "เกี่ยวกับพันธุศาสตร์", subject: "Science", img: "https://images.unsplash.com/photo-1530026405186-ed1f139313f8?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 1", word: "generation", pos: "n.", meaning: "รุ่น", subject: "Science", img: "https://images.unsplash.com/photo-1535591273668-578e31182c4f?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 1", word: "behavior", pos: "n.", meaning: "พฤติกรรม", subject: "Social Studies", img: "https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 1", word: "believe", pos: "v.", meaning: "เชื่อ", subject: "Social Studies", img: "https://images.unsplash.com/photo-1507668077129-56e32842fceb?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 1", word: "monk", pos: "n.", meaning: "พระสงฆ์", subject: "Social Studies", img: "https://images.unsplash.com/photo-1561361513-2d000a50f0dc?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 1", word: "eight", pos: "n.", meaning: "แปด", subject: "Language", img: "https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 1", word: "old", pos: "adj.", meaning: "เก่าแก่", subject: "Language", img: "https://images.unsplash.com/photo-1520114878144-6123749968dd?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 1", word: "counting", pos: "n.", meaning: "การนับ", subject: "Language", img: "https://images.unsplash.com/photo-1501386761578-eac5c94b800a?auto=format&fit=crop&w=500&q=80" },
+    { week: "Week 1", word: "expand", pos: "v.", meaning: "กระจาย", subject: "Maths", img: "./images/expand.jpeg" },
+    { week: "Week 1", word: "tens", pos: "n.", meaning: "หลักสิบ", subject: "Maths", img: "./images/tens.jpeg" },
+    { week: "Week 1", word: "parent", pos: "n.", meaning: "ผู้ปกครอง", subject: "Science", img: "./images/parent.jpeg" },
+    { week: "Week 1", word: "genetic", pos: "adj.", meaning: "เกี่ยวกับพันธุศาสตร์", subject: "Science", img: "./images/genetic.jpeg" },
+    { week: "Week 1", word: "generation", pos: "n.", meaning: "รุ่น", subject: "Science", img: "./images/generation.jpeg" },
+    { week: "Week 1", word: "behavior", pos: "n.", meaning: "พฤติกรรม", subject: "Social Studies", img: "./images/behavior.jpg" },
+    { week: "Week 1", word: "believe", pos: "v.", meaning: "เชื่อ", subject: "Social Studies", img: "./images/believe.jpeg" },
+    { week: "Week 1", word: "monk", pos: "n.", meaning: "พระสงฆ์", subject: "Social Studies", img: "./images/monk.jpg" },
+    { week: "Week 1", word: "eight", pos: "n.", meaning: "แปด", subject: "Language", img: "./images/eight.jpg" },
+    { week: "Week 1", word: "old", pos: "adj.", meaning: "เก่าแก่", subject: "Language", img: "./images/old.jpg" },
+    { week: "Week 1", word: "counting", pos: "n.", meaning: "การนับ", subject: "Language", img: "./images/counting.jpg" },
 
     // Week 2
-    { week: "Week 2", word: "hundreds", pos: "n.", meaning: "หลักร้อย", subject: "Maths", img: "https://images.unsplash.com/photo-1596495578065-6e0763fa1178?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 2", word: "thousands", pos: "n.", meaning: "หลักพัน", subject: "Maths", img: "https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 2", word: "compare", pos: "v.", meaning: "เปรียบเทียบ", subject: "Maths", img: "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 2", word: "offspring", pos: "n.", meaning: "ลูกหลาน", subject: "Science", img: "https://images.unsplash.com/photo-1535591273668-578e31182c4f?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 2", word: "reproduction", pos: "n.", meaning: "การสืบพันธุ์", subject: "Science", img: "https://images.unsplash.com/photo-1530026405186-ed1f139313f8?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 2", word: "adapt", pos: "v.", meaning: "ปรับ", subject: "Science", img: "https://images.unsplash.com/photo-1518020382113-a7e8fc38eac9?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 2", word: "Lord Buddha", pos: "n.", meaning: "พระพุทธเจ้า", subject: "Social Studies", img: "https://images.unsplash.com/photo-1561361513-2d000a50f0dc?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 2", word: "suffer", pos: "v.", meaning: "ทุกข์ทรมาน", subject: "Social Studies", img: "https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 2", word: "marry", pos: "v.", meaning: "แต่งงาน", subject: "Social Studies", img: "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 2", word: "shape", pos: "n.", meaning: "รูปทรง", subject: "Language", img: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 2", word: "plus", pos: "prep.", meaning: "บวก", subject: "Language", img: "https://images.unsplash.com/photo-1611348586804-61bf6c080437?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 2", word: "rectangle", pos: "n.", meaning: "สี่เหลี่ยมผืนผ้า", subject: "Language", img: "https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?auto=format&fit=crop&w=500&q=80" },
+    { week: "Week 2", word: "hundreds", pos: "n.", meaning: "หลักร้อย", subject: "Maths", img: "./images/hundreds.jpg" },
+    { week: "Week 2", word: "thousands", pos: "n.", meaning: "หลักพัน", subject: "Maths", img: "./images/thousands.jpg" },
+    { week: "Week 2", word: "compare", pos: "v.", meaning: "เปรียบเทียบ", subject: "Maths", img: "./images/compare.jpeg" },
+    { week: "Week 2", word: "offspring", pos: "n.", meaning: "ลูกหลาน", subject: "Science", img: "./images/offspring.jpeg" },
+    { week: "Week 2", word: "reproduction", pos: "n.", meaning: "การสืบพันธุ์", subject: "Science", img: "./images/reproduction.jpg" },
+    { week: "Week 2", word: "adapt", pos: "v.", meaning: "ปรับ", subject: "Science", img: "./images/adapt.jpg" },
+    { week: "Week 2", word: "Lord Buddha", pos: "n.", meaning: "พระพุทธเจ้า", subject: "Social Studies", img: "./images/Lord_Buddha.jpg" },
+    { week: "Week 2", word: "suffer", pos: "v.", meaning: "ทุกข์ทรมาน", subject: "Social Studies", img: "./images/suffer.jpg" },
+    { week: "Week 2", word: "marry", pos: "v.", meaning: "แต่งงาน", subject: "Social Studies", img: "./images/marry.jpg" },
+    { week: "Week 2", word: "shape", pos: "n.", meaning: "รูปทรง", subject: "Language", img: "./images/shape.jpg" },
+    { week: "Week 2", word: "plus", pos: "prep.", meaning: "บวก", subject: "Language", img: "./images/plus.jpg" },
+    { week: "Week 2", word: "rectangle", pos: "n.", meaning: "สี่เหลี่ยมผืนผ้า", subject: "Language", img: "./images/rectangle.jpg" },
 
     // Week 3
-    { week: "Week 3", word: "counting", pos: "n.", meaning: "การนับ", subject: "Maths", img: "https://images.unsplash.com/photo-1501386761578-eac5c94b800a?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 3", word: "digit", pos: "n.", meaning: "ตัวเลข", subject: "Maths", img: "https://images.unsplash.com/photo-1596495578065-6e0763fa1178?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 3", word: "number", pos: "n.", meaning: "จำนวน", subject: "Maths", img: "https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 3", word: "extinct", pos: "adj.", meaning: "สูญพันธุ์", subject: "Science", img: "https://images.unsplash.com/photo-1518020382113-a7e8fc38eac9?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 3", word: "disaster", pos: "n.", meaning: "ภัยพิบัติ", subject: "Science", img: "https://images.unsplash.com/photo-1541888946425-d0fbb186a5b2?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 3", word: "disease", pos: "n.", meaning: "โรค", subject: "Science", img: "https://images.unsplash.com/photo-1584634731339-252c581abfc5?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 3", word: "believe", pos: "v.", meaning: "เชื่อ", subject: "Social Studies", img: "https://images.unsplash.com/photo-1507668077129-56e32842fceb?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 3", word: "India", pos: "n.", meaning: "ประเทศอินเดีย", subject: "Social Studies", img: "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 3", word: "Lord", pos: "n.", meaning: "พระเยซูคริสต์", subject: "Social Studies", img: "https://images.unsplash.com/photo-1561361513-2d000a50f0dc?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 3", word: "equal", pos: "adj.", meaning: "เท่ากัน", subject: "Language", img: "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 3", word: "figure", pos: "n.", meaning: "ตัวเลข", subject: "Language", img: "https://images.unsplash.com/photo-1611348586804-61bf6c080437?auto=format&fit=crop&w=500&q=80" },
-    { week: "Week 3", word: "total", pos: "n.", meaning: "ผลรวม", subject: "Language", img: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=500&q=80" },
+    { week: "Week 3", word: "counting", pos: "n.", meaning: "การนับ", subject: "Maths", img: "./images/counting.jpg" },
+    { week: "Week 3", word: "digit", pos: "n.", meaning: "ตัวเลข", subject: "Maths", img: "./images/digit.jpg" },
+    { week: "Week 3", word: "number", pos: "n.", meaning: "จำนวน", subject: "Maths", img: "./images/number.jpg" },
+    { week: "Week 3", word: "extinct", pos: "adj.", meaning: "สูญพันธุ์", subject: "Science", img: "./images/extinct.jpg" },
+    { week: "Week 3", word: "disaster", pos: "n.", meaning: "ภัยพิบัติ", subject: "Science", img: "./images/disaster.jpg" },
+    { week: "Week 3", word: "disease", pos: "n.", meaning: "โรค", subject: "Science", img: "./images/disease.jpg" },
+    { week: "Week 3", word: "believe", pos: "v.", meaning: "เชื่อ", subject: "Social Studies", img: "./images/believe.jpeg" },
+    { week: "Week 3", word: "India", pos: "n.", meaning: "ประเทศอินเดีย", subject: "Social Studies", img: "./images/india.jpg" },
+    { week: "Week 3", word: "Lord", pos: "n.", meaning: "พระเยซูคริสต์", subject: "Social Studies", img: "./images/lord.jpg" },
+    { week: "Week 3", word: "equal", pos: "adj.", meaning: "เท่ากัน", subject: "Language", img: "./images/equal.jpg" },
+    { week: "Week 3", word: "figure", pos: "n.", meaning: "ตัวเลข", subject: "Language", img: "./images/figure.jpg" },
+    { week: "Week 3", word: "total", pos: "n.", meaning: "ผลรวม", subject: "Language", img: "./images/total.jpg" },
 
     // Week 4
     { week: "Week 4", word: "equal", pos: "adj.", meaning: "เท่ากัน", subject: "Maths", img: "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?auto=format&fit=crop&w=500&q=80" },
